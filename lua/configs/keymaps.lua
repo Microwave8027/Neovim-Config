@@ -1,13 +1,11 @@
 local keymap = vim.keymap.set
 
-keymap("n", "<leader>fe", function()
-	require("snacks").explorer()
-end) -- Access the snack explorer
 keymap("i", "jk", "<Esc>") -- Switches from normal insert to normal mode
 keymap("n", "<leader>l", "$") -- Jumps to the end of the line
 keymap("n", "<leader>w", vim.cmd.write, { desc = "save and write to disk" }) -- Writes the file to disk
 keymap("n", "<leader>c", "<cmd>e<Space>$MYVIMRC<cr>", { desc = "open config file" })
 keymap("n", "<leader>h", ":%s/", { desc = "look for words" })
+keymap("n", "gd", vim.lsp.buf.definition, { desc = "Goto Definition" })
 
 -- Telescope
 keymap("n", "<leader>ff", function()
@@ -17,9 +15,17 @@ end, { desc = "find files" })
 -- Undo tree
 keymap("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { desc = "Open the undotree window" })
 
+-- Oil
+keymap("n", "<leader>fe", function()
+	require("oil").open_float()
+end, { desc = "Open oil file explorer" })
+
+-- Neo-tree
+keymap("n", "<leader>e", "<cmd>Neotree toggle right<cr>", { desc = "Opens neotree" })
+
 -- Harpoon v2
 local harpoon = require("harpoon")
-vim.keymap.set("n", "<leader>dh", function()
+vim.keymap.set("n", "<leader>x", function()
 	harpoon:list():remove()
 	vim.notify("Removed " .. vim.fn.expand("%:t") .. " from Harpoon")
 end, { desc = "Harpoon remove current file" })
@@ -36,6 +42,10 @@ end, { desc = "Harpoon next" })
 keymap("n", "<leader>hh", function()
 	require("harpoon"):list():prev()
 end, { desc = "Harpoon prev" })
+keymap("n", "<leader>da", function()
+	harpoon:list():clear()
+	vim.notify("Removed all marked files from harpoon")
+end, { desc = "Remopves All Harpoon Marks" })
 
 -- Diagnostics & LSP Controls
 keymap("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous Diagnostic" })
